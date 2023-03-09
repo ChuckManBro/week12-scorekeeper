@@ -45,6 +45,7 @@
 	border: 0;
 	background-color: #ffc008;
 	padding: 5px 8px 0;
+	color: black;
 }
 
 .dimmed {
@@ -58,6 +59,11 @@ h4,
 h5,
 h6 {
 	font-family: Bungee, Impact, Haettenschweiler, 'Arial Narrow Bold', sans-serif;
+}
+
+.font-bold,
+label {
+	font-weight: bold;
 }
 
 #chuck-modal {

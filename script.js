@@ -1,6 +1,19 @@
 'use strict';
-// WEEK 12 - SCORE KEEPER
 
+/*
+
+WEEK 12 - SCORE KEEPER
+
+- Create a full CRUD application of your choice using either an API or local Array.
+- Use an existing API with AJAX to interact with it.
+- If you do not use an API, store the entities you will create, read, update, and delete in an array.
+- Use a form to post new entities.
+- Build a way for users to update or delete entities
+- Use Bootstrap and CSS to style your project.
+
+ */
+
+// For testing purposes only
 function clickTest1() {
 	console.log('Test button 1 clicked');
 	getHistory();
@@ -13,12 +26,12 @@ function clickTest2() {
 // Initial Variables
 const APIURL = 'https://64037e4d80d9c5c7bab5ad0e.mockapi.io/game-history';
 let allHistoryData = []; // empty until GET from api
+let lastSelectedColor = '';
 let scoreKeeperActive = true;
 let currentPlayers = [
-	['Player 1', 0, 'yellow'],
-	['Player 2', 0, 'yellow'],
+	['Player 1', 0, 'white'],
+	['Player 2', 0, 'gray'],
 ];
-let lastSelectedColor = '';
 
 // DOM Elements
 const scoreKeeperTab = document.querySelector(`#score-keeper-tab`);
@@ -30,7 +43,7 @@ const historyCardsHolder = document.querySelector(`#history-cards-holder`);
 const chuckModal = document.querySelector(`#chuck-modal`);
 const chuckModalBackdrop = document.querySelector(`#chuck-modal-backdrop`);
 
-// INVOCATION of renders: //NOTE Might want to change location
+// Invoke render of both pages to get started
 getHistory();
 renderCurrentPlayers();
 
@@ -90,12 +103,22 @@ function getHistory() {
 }
 
 function renderHistoryCards() {
+	// iterator for unique html 'onclick's
+	let i = 0;
+	let html = '';
+
 	// Clear all scorecards
 	historyCardsHolder.innerHTML = '';
 
+	// backup button if all api data deleted
+	if (allHistoryData[0] === undefined) {
+		console.log('api data is completely empty!');
+		html = `<button class="btn btn-primary" onclick="postFillerToAPI()">Generate Fake Cards</button>`;
+		historyCardsHolder.insertAdjacentHTML('beforeend', html);
+		return;
+	}
+
 	// Generate and insert html for each scorecard
-	let i = 0;
-	let html = '';
 	for (let element of allHistoryData) {
 		const apiId = element.id;
 		const game = element.game;
@@ -107,8 +130,8 @@ function renderHistoryCards() {
   <div class="card text-center mt-3 mb-3 border-0 shadow">
     <h5 class="card-header text-bg-primary">${game}<br>${date}</h5>
     <div class="card-body">
-      <p class="card-text">${scores}</p>
-      <p class="card-text">${memo}</p>
+      <p class="card-text font-bold">${scores}</p>
+      <p class="card-text font-bold">${memo}</p>
       <div class="btn-group btn-group-sm" role="group" aria-label="Small button group">
         <button type="button" class="btn btn-outline-primary" onclick="displayModalCardEdit(${i})">
           <i class="bi bi-pencil-fill"></i>
@@ -160,8 +183,8 @@ function scoreUp(index) {
 	renderCurrentPlayers();
 }
 
-// Convert scoreboard objects-array to string
 function convertScoreboard(scoreboardArray) {
+	// Convert scoreboard objects-array to string
 	let newString = '';
 	for (let player of scoreboardArray) {
 		newString += `<br>${player.name} - ${player.score}`;
@@ -169,8 +192,8 @@ function convertScoreboard(scoreboardArray) {
 	return newString.substring(4); // removes the initial <br>
 }
 
-// Convert Date format from ISO to better table format
 function convertDateFormat(ISODate) {
+	// Convert Date format from ISO to better table format
 	const convertDate = new Date(ISODate);
 	const newMonth = convertDate.getMonth() + 1;
 	const newDayOfMonth = convertDate.getDate();
@@ -180,8 +203,6 @@ function convertDateFormat(ISODate) {
 }
 
 function deleteCard(id) {
-	console.log(`Delete Card ${id} was clicked`);
-
 	const errorMessage = 'There was a problem deleting data';
 
 	fetch(`${APIURL}/${id}`, {
@@ -217,7 +238,7 @@ function displayModalCardEdit(index) {
 	let html = `<div class="card text-center border-0">
 	<h5 class="card-header text-bg-primary">${game}<br>${date}</h5>
 	<div class="card-body">
-		<p class="card-text">${scores}</p>
+		<p class="card-text font-bold">${scores}</p>
 		<label class="d-block">Memo: </label>
 		<textarea id="updated-memo-text" class="d-block mb-3" rows="5" cols="33" placeholder="${oldMemo}">${oldMemo}</textarea>
 		<button type="button" class="btn btn-primary" onclick="closeModal()">Cancel</button>
@@ -252,7 +273,7 @@ function cardMemoPut(id) {
 			})
 			.then((task) => {
 				// Do something with updated task
-				console.log(`Memo for id: ${id} successfully updated.`);
+				console.log(`Memo for id: ${id} successfully updated`);
 				getHistory();
 			})
 			.catch((error) => {
@@ -272,7 +293,7 @@ function displayModalCardDelete(index) {
 
 	let html = `<div class="card text-center border-0">
 	<div class="card-body">
-		<p class="card-text">Are you sure you want to delete<br>${game}, played on ${date} ?</p>
+		<p class="card-text font-bold">Are you sure you want to delete<br>${game}, played on ${date} ?</p>
 		<button type="button" class="btn btn-primary" onclick="closeModal()">Cancel</button>
 		<button type="button" class="btn btn-primary" onclick="deleteCard(${id})">Delete</button>
 	</div>
@@ -464,4 +485,94 @@ function saveGame() {
 	tabHistory();
 	clearScores();
 	closeModal();
+}
+
+function postFillerToAPI() {
+	const newGameToPost = {
+		game: 'Scrabble',
+		date: '2020-10-31T10:14:47.024Z',
+		scoreboard: [
+			{
+				name: 'Randy',
+				score: '25',
+			},
+			{
+				name: 'Phyllis',
+				score: '27',
+			},
+		],
+		memo: 'Wow! What a scintillating game of Scrabble!',
+	};
+
+	const newGameToPost2 = {
+		game: 'Ticket to Ride',
+		date: '2021-03-09T00:36:42.345Z',
+		scoreboard: [
+			{
+				name: 'Marc',
+				score: '50',
+			},
+			{
+				name: 'Serena',
+				score: '45',
+			},
+			{
+				name: 'Sierra',
+				score: '18',
+			},
+			{
+				name: 'Ally',
+				score: '16',
+			},
+			{
+				name: 'Valerie',
+				score: '13',
+			},
+		],
+		memo: 'Choo-choo, woohoo!!',
+	};
+
+	fetch(APIURL, {
+		method: 'POST',
+		headers: { 'content-type': 'application/json' },
+		// Send your data in the request body as JSON
+		body: JSON.stringify(newGameToPost),
+	})
+		.then((res) => {
+			if (res.ok) {
+				return res.json();
+			}
+			// handle error
+		})
+		.then((data) => {
+			// do something with the new task
+			console.log(`First filler api POST successful`);
+			fetchAnother();
+		})
+		.catch((error) => {
+			// handle error
+		});
+
+	function fetchAnother() {
+		fetch(APIURL, {
+			method: 'POST',
+			headers: { 'content-type': 'application/json' },
+			// Send your data in the request body as JSON
+			body: JSON.stringify(newGameToPost2),
+		})
+			.then((res) => {
+				if (res.ok) {
+					return res.json();
+				}
+				// handle error
+			})
+			.then((data) => {
+				// do something with the new task
+				console.log(`Second filler api POST successful`);
+				getHistory();
+			})
+			.catch((error) => {
+				// handle error
+			});
+	}
 }
