@@ -1,0 +1,111 @@
+#test-buttons {
+	position: fixed;
+	top: 5px;
+	right: 5px;
+	z-index: 100;
+}
+
+.hidden {
+	display: none;
+}
+
+.player-red {
+	background-color: #dc3545;
+}
+
+.player-orange {
+	background-color: #ff8822;
+}
+
+.player-yellow {
+	background-color: #ffc008;
+}
+
+.player-green {
+	background-color: #198754;
+}
+
+.player-blue {
+	background-color: #3687fe;
+}
+
+.player-purple {
+	background-color: #aa56fe;
+}
+
+.player-gray {
+	background-color: #9a9a9a;
+}
+
+.player-white {
+	background-color: #f6f6f6;
+}
+
+.tab {
+	border: 0;
+	background-color: #ffc008;
+	padding: 5px 8px 0;
+}
+
+.dimmed {
+	background-color: #a9861f;
+}
+
+h1,
+h2,
+h3,
+h4,
+h5,
+h6 {
+	font-family: Bungee, Impact, Haettenschweiler, 'Arial Narrow Bold', sans-serif;
+}
+
+#chuck-modal {
+	position: fixed;
+	top: 50%;
+	left: 50%;
+	transform: translate(-50%, -50%);
+	z-index: 10;
+}
+
+#chuck-modal-backdrop {
+	position: fixed;
+	top: 0;
+	left: 0;
+	width: 100%;
+	height: 100%;
+	background-color: #22252abb;
+	backdrop-filter: blur(1.5px);
+	-webkit-backdrop-filter: blur(1.5px);
+	z-index: 5;
+}
+
+.scorekeeper-text {
+	font-family: Bungee, Impact, Haettenschweiler, 'Arial Narrow Bold', sans-serif;
+	font-size: 2rem;
+}
+
+#score-keeper-page * {
+	color: black;
+}
+
+/* Size of Bootstrap icons on the Scorekeeper page */
+#score-keeper-page i {
+	font-size: 1.5rem;
+}
+
+#score-keeper-holder {
+	min-width: 500px;
+}
+
+.color-selector {
+	height: 50px;
+	width: 50px;
+	border: solid #767676 1px;
+	margin: 5px;
+	display: inline-block;
+}
+
+.color-selector.selected {
+	border: solid #0d6efd 7px;
+}
